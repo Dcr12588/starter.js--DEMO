@@ -15,9 +15,14 @@ const divide = (num1,num2) => num1 / num2
 // console.log(multiply(2,4))
 // console.log(divide(16,4))
 
+function calc(num1,num2, calllbackName){
+    return calllbackName(num1, num2)
+}
+
+
 const calculator = (num1,num2, calllbackName) => calllbackName(num1, num2)
 
-console.log(calculator(5, 7, add))
+// console.log(calculator(5, 7, add))
 
 ///////////////////////
 ////// PET STORE //////
@@ -83,19 +88,47 @@ const applyFlatRateDiscount = (product, discount) => {
     product.displayPrice = product.basePrice - discount
 }
 
-const applyDiscount = (arr, calllbackName, discount) => {
-    arr.forEach((element) => calllbackName(product, discount))
+const applyPercentageDiscount = (product, discount) => {
+    product.displayPrice = product.basePrice * (1 -  discount)
 }
 
-applyDiscount(catProducts, applyFlatRateDiscount, 2)
-console.log(catProducts)
+const applyDiscount = (arr, discount, calllbackName) => {
+    arr.forEach((element) => calllbackName(element, discount))
+}
+
+applyDiscount(catProducts, 2, applyFlatRateDiscount)
+// console.log(catProducts)
+
+applyDiscount(dogProducts,.1, applyPercentageDiscount)
+// console.log(dogProducts)
+
 ////////////////////////
 ////// SANDWICHES //////
 ////////////////////////
 
 // CODE HERE
 
+const makeSandwich = (bread) => {
+    return (ingredients) => {
+        let order = `You ordered a ${bread} sandwich with ${ingredients}`
 
+        for (let i = 0; i < ingredients.length; i++) {
+
+            if (i === ingredients.length - 1 && i !== 0) {
+                order += `and ${ingredients[i]}.`
+            } else if (ingredients.length === 1) {
+                order += `${ingredients[i]}.`
+            } else {
+                order += `${ingredients[i]}, `
+            }
+            }
+    
+            return order
+    }
+}
+
+const makeWheatSandwich = makeSandwich(`wheat`)
+console.log(makeWheatSandwich([`cheese`, `pickles`, `ham`, `mustard`]))
 
 ////////////////////////////////////
 ////// COPY AND CHANGE ARRAYS //////
@@ -160,7 +193,17 @@ const copyArrToSnakeCase = arr => {
 
 const colors = ['red', 'blue', 'yellow', 'green', 'orange']
 
-const mappedColors // = colors.map()
+let newColors = []
+
+for (let i=0; i < colors.length;i++){
+    newColors.push(colors[i])
+    newColors.push(`pink`)
+}
+console.log(newColors)
+// const mappedColors = colors.map((element) => `pink`)
+// console.log(mappedColors)
+
+// const mappedColors // = colors.map()
 
 /*
     Edit the formalGreeting function and use the built in .map method 
@@ -173,11 +216,11 @@ const mappedColors // = colors.map()
 const formalNames = ['Bernard', 'Elizabeth', 'Conrad', 'Mary Margaret']
 
 const formalGreeting = names => {
-    // CODE HERE
+    return names.map((el) => `Hello, ${el}`)
 }
 
 // Call formalGreeting passing in the formalNames array
-
+console.log(formalGreeting(formalNames))
 
 //// FILTER ////
 
@@ -188,7 +231,9 @@ const formalGreeting = names => {
 
 const places = ['Binghampton', 'Albany', 'New York', 'Ithaca', 'Auburn', 'Rochester', 'Buffalo']
 
-const placesThatStartWithA // = places.filter()
+const placesThatStartWithA = places.filter((place) => place[0] === `A`)
+
+console.log(placesThatStartWithA)
 
 
 /*
@@ -215,6 +260,12 @@ let jobs = [
 
 // CODE HERE
 
+
+const identifier = (arr) => {
+    return arr.filter((job) => job.programmer)
+}
+
+console.log(identifier(jobs))
 // call the function passing in the jobs array
 
 
@@ -231,11 +282,12 @@ let jobs = [
 const numsToReduce = [43, 7, 24, 79, 290]
 
 const productOfArray = numbers => {
-    // Code here
+    return numbers.reduce((accumlulator, current) => accumlulator * current)
 }
 
 // CODE HERE
 
+console.log(productOfArray(numsToReduce))
 
 // call productOfArray passing in numsToReduce
 
@@ -266,4 +318,7 @@ const expenses = [
     }
 ]
 
-const remaining // = expenses.reduce(//callback, //initial value)
+
+
+ const remaining  = expenses.reduce((total, current) => total - current.amount, budget)
+ console.log(remaining)
